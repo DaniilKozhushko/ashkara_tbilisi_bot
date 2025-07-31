@@ -29,7 +29,7 @@ async def main():
     dp.message.middleware(AutoClearStateMiddleware())
 
     # инициализация базы данных
-    await init_db(drop=True)
+    await init_db(drop=False)
 
     try:
         # очистка старых обновлений, чтобы бот не обработал старые команды после запуска
