@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: ashkara_tbilisi_bot_db
+      POSTGRES_USER: postgres_ashkara
+      POSTGRES_PASSWORD: aw6d1a68w1da6w1d
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  bot:
+    build: .
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
