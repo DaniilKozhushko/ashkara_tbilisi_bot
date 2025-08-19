@@ -245,9 +245,8 @@ async def select_type(callback: CallbackQuery, state: FSMContext):
         text=f"""Списание за <b>{showed_write_off_date}</b>
 Причина списания: <b>{showed_write_off_type}</b>
 
-Введи комментарий или отправь "-":
-"""
-    )
+Введи комментарий или отправь без него:
+""", reply_markup=ikb.send_without_comment())
 
     # переход в Состояние получения комментария
     await state.set_state(WriteOff.typing_comment)
@@ -255,13 +254,27 @@ async def select_type(callback: CallbackQuery, state: FSMContext):
 
 # получение списка продуктов от пользователя
 @user_router.message(WriteOff.typing_comment)
-async def typing_comment_state(message: Message, state: FSMContext):
-    # сохранение текста пользователя
-    comment = message.text.strip()
-    await state.update_data(comment=comment)
+@user_router.callback_query(WriteOff.typing_comment, F.data == "no_comment")
+async def typing_comment_state(event: "Message | CallbackQuery", state: FSMContext):
+    # определение комментария
+    if isinstance(event, Message):
+        # сохранение текста пользователя
+        comment = event.text.strip()
 
-    # удаление сообщение пользователя
-    await message.delete()
+        # удаление сообщение пользователя
+        await event.delete()
+
+        # получение id чата
+        chat_id = event.chat.id
+    else:
+        # подстановка значения по умолчанию
+        comment = "-"
+
+        # получение id чата
+        chat_id = event.message.chat.id
+
+    # сохранение комментария
+    await state.update_data(comment=comment)
 
     # получение данных для отображения
     data = await state.get_data()
@@ -285,8 +298,8 @@ async def typing_comment_state(message: Message, state: FSMContext):
 """
 
     # редактирование сообщения бота
-    await message.bot.edit_message_text(
-        chat_id=message.chat.id, message_id=editable_message_id, text=new_text
+    await event.bot.edit_message_text(
+        chat_id=chat_id, message_id=editable_message_id, text=new_text
     )
 
     # переход в Состояние получения списка продуктов

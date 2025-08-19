@@ -35,7 +35,6 @@ class AuthorizationMiddleware(BaseMiddleware):
             await event.reply(
                 text=f"""😢 Код неправильный.
 
-Попробуй ещё раз ⬇️
-{current_state}"""
+Попробуй ещё раз ⬇️"""
             )
             return

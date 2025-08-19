@@ -68,3 +68,18 @@ def select_write_off_type() -> InlineKeyboardMarkup:
     builder.row(InlineKeyboardButton(text="Питание персонала", callback_data="staff"))
 
     return builder.as_markup()
+
+
+def send_without_comment() -> InlineKeyboardMarkup:
+    """
+    Inline-клавиатура для отправки списания без комментария.
+
+    :return: InlineKeyboardMarkup
+    """
+    builder = InlineKeyboardBuilder()
+
+    builder.row(
+        InlineKeyboardButton(text="Без комментария", callback_data="no_comment")
+    )
+
+    return builder.as_markup()

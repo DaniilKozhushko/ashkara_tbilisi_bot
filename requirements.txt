@@ -1,5 +1,5 @@
-aiogram==3.21.0
+aiogram==3.22.0
 pydantic-settings==2.10.1
-SQLAlchemy==2.0.42
+SQLAlchemy==2.0.43
 asyncpg==0.30.0
 python-dateutil==2.9.0.post0

@@ -10,7 +10,7 @@ from aiogram.client.default import DefaultBotProperties
 from middlewares.clear_state import AutoClearStateMiddleware
 from middlewares.authorization import AuthorizationMiddleware
 
-# инициализация объекта Бота с токеном с указанием форматирования сообщений
+# инициализация объекта Бота с токеном и указанием форматирования сообщений
 bot = Bot(
     token=settings.TELEGRAM_BOT_TOKEN,
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
@@ -31,10 +31,10 @@ async def main():
     dp.message.middleware(AutoClearStateMiddleware())
 
     # инициализация базы данных
-    await init_db(drop=True)
+    await init_db(drop=False)
 
     try:
-        # очистка старых обновлений, чтобы бот не обработал старые команды после запуска
+        # очистка обновлений, чтобы бот не обработал старые команды после запуска
         await bot.delete_webhook(drop_pending_updates=True)
 
         # запуск long polling

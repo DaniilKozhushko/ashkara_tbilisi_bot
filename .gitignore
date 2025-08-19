@@ -4,3 +4,9 @@ __pycache__/
 *.sqlite3
 *.log
 .env.*
+/.venv/
+.idea/
+*.iml
+*.iws
+*.pyo
+*.pyd
